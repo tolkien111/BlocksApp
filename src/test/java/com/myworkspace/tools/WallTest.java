@@ -37,14 +37,6 @@ class WallTest {
 
     }
 
-//    @Test
-//    void shouldThrowColorNotFoundException(){
-//
-//        //THEN
-//        assertThrows(ColorNotFoundException.class, () -> filledWall.findBlockByColor("color7"));
-//
-//    }
-
     @Test
     void shouldFindBlockAnyBlockWithColor() throws NoSuchElementException {
         //GIVEN
