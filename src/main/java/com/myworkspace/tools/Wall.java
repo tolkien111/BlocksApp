@@ -1,10 +1,10 @@
 package com.myworkspace.tools;
 
-import com.myworkspace.exception.ColorNotFoundException;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 @NoArgsConstructor
@@ -19,21 +19,26 @@ public class Wall implements Structure {
 
     @Override
     public Optional<Block> findBlockByColor(String color) {
-        if (color == null) return Optional.empty();
+        if (color.isBlank() || color.isBlank() || color.matches("a-zA-Z0-9{3,}")) return Optional.empty();
 
-        return Optional.ofNullable(blocks.stream().flatMap(block -> Stream.of(block)).filter(x -> x.getColor().equals(color)).findAny()
-                .orElseThrow(() -> new ColorNotFoundException(color + " not found")));
+        return findByPredicate(x -> x.getColor().equals(color)).findAny();
     }
 
     @Override
     public List<Block> findBlocksByMaterial(String material) {
         if (material == null) return null;
-        return blocks.stream().flatMap(block -> Stream.of(block)).filter(y -> y.getMaterial().equals(material)).toList();
+        return findByPredicate(y -> y.getMaterial().equals(material)).toList();
+    }
+
+    private Stream <Block> findByPredicate(Predicate<Block> predicate){
+        return blocks.stream()
+                .flatMap(block -> block.toStream())
+                .filter(predicate);
     }
 
     @Override
     public int count() {
-        return 0;
+        return (int) blocks.stream().flatMap(block -> block.toStream()).count();
     }
 
 }

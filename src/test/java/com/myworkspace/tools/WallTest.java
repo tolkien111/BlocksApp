@@ -1,22 +1,22 @@
 package com.myworkspace.tools;
 
-import com.myworkspace.exception.ColorNotFoundException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class WallTest {
 
-    private final static Block BLOCK01 = new BlockImpl("color3", "material1");
+    private final static Block BLOCK01 = new BlockImpl("color1", "material3");
     private final static Block BLOCK02 = new BlockImpl("color2", "material2");
     private final static CompositeBlock COMPOSITE_BLOCK03 = new CompositeBlockImpl("color3", "material3");
-    private final static Block BLOCK04 = new BlockImpl("color4", "material3");
-    private final static CompositeBlock COMPOSITE_BLOCK05 = new CompositeBlockImpl("color1", "material4");
-    private final static Block BLOCK06 = new BlockImpl("color2", "material4");
+    private final static Block BLOCK04 = new BlockImpl("color4", "material4");
+    private final static CompositeBlock COMPOSITE_BLOCK05 = new CompositeBlockImpl("color5", "material5");
+    private final static Block BLOCK06 = new BlockImpl("color6", "material6");
 
     private Structure filledWall;
 
@@ -36,23 +36,40 @@ class WallTest {
 
     }
 
-    @Test
-    void shouldThrowColorNotFoundException(){
+//    @Test
+//    void shouldThrowColorNotFoundException(){
+//
+//        //THEN
+//        assertThrows(ColorNotFoundException.class, () -> filledWall.findBlockByColor("color7"));
+//
+//    }
 
-        //THEN
-        assertThrows(ColorNotFoundException.class, () -> filledWall.findBlockByColor("color6"));
+    @Test
+    void shouldFindBlockAnyBlockWithColor() {
+        //GIVEN
+        String colorExpected = "color6";
+        //WHEN & THEN
+        Optional<Block> result = filledWall.findBlockByColor(colorExpected);
+        assertEquals(colorExpected, result.get().getColor());
     }
 
     @Test
-    void shouldFindBlockAnyBlockWithWrightColor(){
+    void shouldAllBlockWithMaterial() {
         //GIVEN
-        String colorExpected = "color3";
-        //WHEN
-       Optional<Block> result =  filledWall.findBlockByColor(colorExpected);
-        //THEN
-        assertEquals(colorExpected, result.get().getColor());
+        String materialExpected = "material3";
+        //WHEN & THEN
+        List <Block> result = filledWall.findBlocksByMaterial(materialExpected);
+        assertEquals(materialExpected, result.get(0).getMaterial());
+        assertEquals(2,result.size());
+    }
 
-        System.out.println(result);
+    @Test
+    void shouldCountAllBlocksInTheWall() {
+        //GIVEN
+        int amountExpected = 6;
+        //WHEN & THEN
+        int result = filledWall.count();
+        assertEquals(amountExpected, result);
     }
 
 
