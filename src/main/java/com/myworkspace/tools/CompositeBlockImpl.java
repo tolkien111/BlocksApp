@@ -10,13 +10,15 @@ public class CompositeBlockImpl extends BlockImpl implements CompositeBlock {
     private List<Block> blocks = new ArrayList<>();
 
     public CompositeBlockImpl(String color, String material) {
-        super(color, material);
+        super(color.toLowerCase(), material.toLowerCase());
     }
+
 
     @Override
     public List<Block> getBlocks() {
         return blocks;
     }
+
 
     @Override
     public Stream<Block> toStream() {
@@ -25,6 +27,7 @@ public class CompositeBlockImpl extends BlockImpl implements CompositeBlock {
                 blocks.stream().flatMap(block -> block.toStream())
         );
     }
+
 
     @Override
     public String toString() {

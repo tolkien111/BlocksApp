@@ -11,8 +11,8 @@ public class BlockImpl implements Block{
     private String material;
 
     public BlockImpl(String color, String material) {
-        this.color = color;
-        this.material = material;
+        this.color = color.toLowerCase();
+        this.material = material.toLowerCase();
     }
 
     @Override
@@ -29,6 +29,7 @@ public class BlockImpl implements Block{
     public Stream<Block> toStream() {
         return Stream.of(this);
     }
+
 
     @Override
     public String toString() {

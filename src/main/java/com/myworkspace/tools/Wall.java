@@ -17,24 +17,28 @@ public class Wall implements Structure {
         Arrays.stream(allBlocks).forEach(block -> blocks.add(block));
     }
 
+
     @Override
     public Optional<Block> findBlockByColor(String color) {
-        if (color.isBlank() || color.isBlank() || color.matches("a-zA-Z0-9{3,}")) return Optional.empty();
-
-        return findByPredicate(x -> x.getColor().equals(color)).findAny();
+        String colorToLowerCase = color.toLowerCase();
+        return findByPredicate(x -> x.getColor().equals(colorToLowerCase)).findAny();
     }
+
 
     @Override
     public List<Block> findBlocksByMaterial(String material) {
-        if (material == null) return null;
-        return findByPredicate(y -> y.getMaterial().equals(material)).toList();
+        if (material == null || material.isEmpty() || material.isBlank() || !material.matches("[a-zA-Z0-9]{3,}")){
+            return null;
+        }
+        String materialToLowerCase = material.toLowerCase();
+        return findByPredicate(y -> y.getMaterial().equals(materialToLowerCase)).toList();
     }
-
-    private Stream <Block> findByPredicate(Predicate<Block> predicate){
+    private Stream<Block> findByPredicate(Predicate<Block> predicate) {
         return blocks.stream()
                 .flatMap(block -> block.toStream())
                 .filter(predicate);
     }
+
 
     @Override
     public int count() {
