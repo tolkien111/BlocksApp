@@ -4,8 +4,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,6 +20,7 @@ class WallTest {
     private final static Block BLOCK06 = new BlockImpl("color6", "material6");
 
     private Structure filledWall;
+    private Structure emptyWall;
 
 
     @BeforeAll
@@ -34,27 +35,77 @@ class WallTest {
     @BeforeEach
     void setUp() {
         filledWall = new Wall(BLOCK01, BLOCK02, COMPOSITE_BLOCK03);
-
+        emptyWall = new Wall();
     }
 
     @Test
-    void shouldFindBlockAnyBlockWithColor() throws NoSuchElementException {
+    void shouldFindAnyBlockOfColor() {
         //GIVEN
         String colorExpected = "color6";
         //WHEN & THEN
         Optional<Block> result = filledWall.findBlockByColor(colorExpected);
         assertTrue(result.isPresent());
+        assertEquals(colorExpected, result.get().getColor());
     }
 
     @Test
-    void shouldAllBlockWithMaterial() {
+    void shouldNotFindBlockOfColor() {
+        //GIVEN
+        String colorNotExpected = "color";
+        Optional<Block> emptyStructure = Optional.empty();
+        //WHEN & THEN
+        Optional<Block> result = filledWall.findBlockByColor(colorNotExpected);
+        assertEquals(emptyStructure, result);
+    }
+
+    @Test
+    void shouldBeTheSameBlock(){
+        //GIVEN
+        Block BLOCK08 = new BlockImpl("color1", "material3");
+        String colorExpected = "color1";
+        //WHEN & THEN
+        Optional<Block> result = filledWall.findBlockByColor(colorExpected);
+        assertEquals(Optional.of(BLOCK08), result);
+    }
+
+    @Test
+    void shouldFindAllBlockOfMaterial() {
         //GIVEN
         String materialExpected = "material6";
         //WHEN & THEN
-        List <Block> result = filledWall.findBlocksByMaterial(materialExpected);
+        List<Block> result = filledWall.findBlocksByMaterial(materialExpected);
         assertEquals(materialExpected, result.get(0).getMaterial());
-        assertEquals(2,result.size());
+        assertEquals(2, result.size());
     }
+
+    @Test
+    void shouldNotFindBlockOfMaterial() {
+        //GIVEN
+        String materialNotExpected = "material";
+        //WHEN & THEN
+        List<Block> result = filledWall.findBlocksByMaterial(materialNotExpected);
+        assertEquals(0, result.size());
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void shouldReturnEmptyListOfBlockOfMaterial() {
+        //GIVEN
+        List <Block> listExpected = new ArrayList<>();
+        String materialNotExpected = "material";
+        //WHEN & THEN
+        List<Block> result = emptyWall.findBlocksByMaterial(materialNotExpected);
+        assertEquals(listExpected, result);
+    }
+
+    @Test
+    void shouldBeTheSameWall(){
+        //GIVEN
+        final var expectedWall = new Wall(BLOCK01, BLOCK02, COMPOSITE_BLOCK03);
+        //WHEN & THEN
+        assertEquals(expectedWall,filledWall);
+    }
+
 
     @Test
     void shouldCountAllBlocksInTheWall() {
