@@ -81,11 +81,21 @@ class WallTest {
     @Test
     void shouldNotFindBlockOfMaterial() {
         //GIVEN
-        String materialNotExpected = "material";
+        String materialNotExpected1 = "material";
+        String materialNotExpected2 = "";
+        String materialNotExpected3 = "   ";
+        String materialNotExpected4 = "material";
+
+
         //WHEN & THEN
-        List<Block> result = filledWall.findBlocksByMaterial(materialNotExpected);
-        assertEquals(0, result.size());
-        assertTrue(result.isEmpty());
+        List<Block> result1 = filledWall.findBlocksByMaterial(materialNotExpected1);
+        List<Block> result2 = filledWall.findBlocksByMaterial(materialNotExpected2);
+        List<Block> result3 = filledWall.findBlocksByMaterial(materialNotExpected3);
+        List<Block> result4 = filledWall.findBlocksByMaterial(materialNotExpected4);
+        assertTrue(result1.isEmpty());
+        assertTrue(result2.isEmpty());
+        assertTrue(result3.isEmpty());
+        assertTrue(result4.isEmpty());
     }
 
     @Test
